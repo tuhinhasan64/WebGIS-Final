@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>My Web GIS Map — GIS 5220/420</title>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: #16324f;
+      color: white;
+      padding: 14px 18px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #map {
+      height: calc(100vh - 56px);
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>My Web GIS Map — GIS 5220/420</header>
+
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <script>
+    // ----------------------------------------------------------
+    // STEP 1: Create the map
+    // setView([latitude, longitude], zoom level)
+    // ----------------------------------------------------------
+    const map = L.map("map").setView([39.5, -98.35], 4);
+
+    // ----------------------------------------------------------
+    // STEP 2: Add a basemap
+    // OpenStreetMap tiles
+    // ----------------------------------------------------------
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
+    }).addTo(map);
+
+    // ----------------------------------------------------------
+    // STEP 3: Load GeoJSON data from data.geojson
+    // ----------------------------------------------------------
+    fetch("data.geojson")
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error(
+            "Could not load data.geojson. Status: " + response.status
+          );
+        }
+        return response.json();
+      })
+      .then(function (geojsonData) {
+        L.geoJSON(geojsonData, {
+          style: function (feature) {
+            return {
+              color: "#1F4E79",
+              weight: 2,
+              fillColor: "#4A90D9",
+              fillOpacity: 0.4,
+            };
+          },
+
+          onEachFeature: function (feature, layer) {
+            if (feature.properties) {
+              let content = "<b>Feature Details</b><br>";
+              for (let key in feature.properties) {
+                content += "<b>" + key + ":</b> " + feature.properties[key] + "<br>";
+              }
+              layer.bindPopup(content);
+            }
+          },
+        }).addTo(map);
+      })
+      .catch(function (error) {
+        console.error("Error loading GeoJSON:", error);
+      });
+
+    // ----------------------------------------------------------
+    // STEP 4: Add a scale bar
+    // ----------------------------------------------------------
+    L.control.scale({ imperial: true, metric: true }).addTo(map);
+  </script>
+</body>
+</html>

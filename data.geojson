@@ -1,0 +1,44 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-87.6298, 41.8781]
+      },
+      "properties": {
+        "City": "Chicago",
+        "State": "Illinois",
+        "Population": "2,696,555",
+        "Notes": "Located on Lake Michigan"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-95.3698, 29.7604]
+      },
+      "properties": {
+        "City": "Houston",
+        "State": "Texas",
+        "Population": "2,304,580",
+        "Notes": "Largest city in Texas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-118.2437, 34.0522]
+      },
+      "properties": {
+        "City": "Los Angeles",
+        "State": "California",
+        "Population": "3,979,576",
+        "Notes": "Second most populous US city"
+      }
+    }
+  ]
+}
